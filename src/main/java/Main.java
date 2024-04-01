@@ -1,22 +1,21 @@
 import org.Controllers.CPUScrapper;
 import org.Controllers.GPUScrapper;
-import org.Controllers.buildPC;
+import org.Controllers.BuildPC;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class Main {
 
-    private final double cpuWeight = 0.4;
+    private static final double cpuWeight = 0.4;
     private static final double gpuWeight = 0.6;
     static int budget;
 
    public static void main(String[] args) {
 
-       //PPBcontroller PPB = new PPBcontroller();
-       //PPB.initalizeSearch();
-       ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
-       //GUI gui = new GUI();
+
+       //TODO: ADD TAXES
+
 
        menu();
 
@@ -27,8 +26,8 @@ public class Main {
        CPU.initializeSearch();
        CPU.searchCPUS();
 
-       buildPC build =  new buildPC(GPU.getGpuCatalog(), CPU.getCpuCatalog());
-       build.getBestGpu(budget, gpuWeight);
+       BuildPC builder =  new BuildPC(GPU.getGpuCatalog(), CPU.getCpuCatalog(),budget,gpuWeight,cpuWeight);
+       builder.build();
     }
 
 

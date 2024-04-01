@@ -1,12 +1,12 @@
 package org.Models;
 
-public class CPU {
+public class CPU implements Hardware {
 
     private String name;
     private String cpuLink;
     private String buyLink;
-    private double price;
-    private double rating;
+    private int price;
+    private int rating;
     private int benchmark;
 
     private String power;
@@ -42,19 +42,19 @@ public class CPU {
         this.buyLink = buyLink;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -69,12 +69,12 @@ public class CPU {
     @Override
     public String toString() {
         return
-                name + '\'' +
+                name +
                 ", price=" + price +
-                ", Cpu-link='" + cpuLink + '\'' +
-                ", power='" + power + '\'' +
+                ", Cpu-link='" + cpuLink +
+                ", power='" + power +
                 ", benchmark=" + benchmark +
-                ", buy-Link='" + buyLink + '\'' +
+                ", buy-Link='" + buyLink +
                 ", rating=" + rating +
                 '}';
     }

@@ -15,7 +15,7 @@ public class CPUScrapper {
 
     private final WebDriver chromeDriver = new ChromeDriver();
 
-    private final Map<Double, List<CPU>> cpuCatalog = new LinkedHashMap<>();
+    private final Map<Integer, List<CPU>> cpuCatalog = new LinkedHashMap<>();
     public void initializeSearch(){
         chromeDriver.get("https://www.cpubenchmark.net/cpu_value_available.html#single-value");
         try {
@@ -38,9 +38,11 @@ public class CPUScrapper {
             CPU cpu = new CPU();
 
             cpu.setName(linkElement.findElement(By.className("prdname")).getText());
-            cpu.setRating(Double.parseDouble(linkElement.findElement(By.className("count")).getText().replaceAll("[^\\d.]", "")));
+            int rating =(int) (Double.parseDouble(linkElement.findElement(By.className("count")).getText().replaceAll("[^\\d.]", "")));
+            cpu.setRating(rating);
             cpu.setBenchmark(Integer.parseInt(linkElement.findElement(By.className("mark-neww")).getText().replaceAll("[^\\d.]", "")));
-            cpu.setPrice(Double.parseDouble(linkElement.findElement(By.className("price-neww")).getText().replaceAll("[^\\d.]", "")));
+            int price  = (int) Double.parseDouble((linkElement.findElement(By.className("price-neww")).getText().replaceAll("[^\\d.]", "")));
+            cpu.setPrice(price);
             cpu.setCpuLink(linkElement.getAttribute("href"));
             addCPU(cpu);
         }
@@ -58,7 +60,7 @@ public class CPUScrapper {
         }
     }
 
-    public Map<Double, List<CPU>> getCpuCatalog() {
+    public Map<Integer, List<CPU>> getCpuCatalog() {
         return cpuCatalog;
     }
 }

@@ -1,6 +1,6 @@
 package org.Models;
 
-public class GPU {
+public class GPU implements Hardware {
 
     public int getPrice() {
         return price;
@@ -69,12 +69,12 @@ public class GPU {
     @Override
     public String toString() {
         return
-                name + '\'' +
+                name +
                 ", price=" + price +
-                ", link='" + link + '\'' +
-                ", power='" + power + '\'' +
+                ", link='" + link  +
+                ", power='" + power  +
                 ", benchmark=" + benchmark +
-                ", vram='" + vram + '\'' +
+                ", vram='" + vram +
                 ", rating=" + rating +
                 '}';
     }
