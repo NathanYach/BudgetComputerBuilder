@@ -1,29 +1,53 @@
-package org.Controllers;
+/**
+ * The GPUScrapper class is responsible for scraping GPU information from a web page.
+ * It utilizes Selenium WebDriver to navigate the webpage and extract relevant GPU data.
+ * The scraped GPU information is stored in a catalog, organized based on GPU price.
+ * It works in conjunction with the ScrapperHelper class to add scraped GPUs to the catalog.
+ *
+ * @author Nathan Yach
+ */
 
+package org.Controllers;
 import org.Models.GPU;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GPUScrapper {
 
 
-    public Map<Integer, List<GPU>> getGpuCatalog() {
-        return gpuCatalog;
-    }
 
+    //Map to store GPUs Based on price
     private final Map<Integer, List<GPU>> gpuCatalog = new LinkedHashMap<>();
-    private final WebDriver chromeDriver = new ChromeDriver();
-    private List<WebElement> gpuRow= new ArrayList<>();
-    private final List<WebElement> cells =new ArrayList<>();
-    public void searchGPUS(){
 
+    //Initialize selenium Chrome Driver
+    private WebDriver chromeDriver;
+
+    //Initializes helper class
+    ScrapperHelper helper = new ScrapperHelper();
+
+
+    /**
+     * Searches for GPUs on a web page, extracts relevant information, and adds them to the collection.
+     */
+    public void search(){
+
+
+        List<WebElement> gpuRow;
+        //Find the GPU information element
         WebElement gpuTableOut = chromeDriver.findElement(By.cssSelector("table[aria-label*='gpu comparison table']"));
         WebElement gpuTable = gpuTableOut.findElement(By.xpath(".//tbody"));
+
+        //Find all row elements within the table
         gpuRow = gpuTable.findElements(By.tagName("tr"));
+
+        //Find all elements inside each row
         for (WebElement row : gpuRow) {
 
             GPU gpu = new GPU();
@@ -31,6 +55,9 @@ public class GPUScrapper {
             // Find all cells (columns) in the row
             List<WebElement> cells = row.findElements(By.tagName("td"));
             List<String> stringList = new ArrayList<>();
+
+            //Get Text from cells within table
+            //If I=4 get value of attribute "href"
             int i=0;
             for (WebElement cell : cells) {
                 stringList.add(cell.getText());
@@ -40,11 +67,8 @@ public class GPUScrapper {
                 i++;
 
             }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            //Set data retrieved into GPU object if string size is not 0
+
             if(stringList.size() != 0){
                 gpu.setName(stringList.get(0));
                 gpu.setPower(stringList.get(1));
@@ -54,63 +78,43 @@ public class GPUScrapper {
                 gpu.setBenchmark(Integer.parseInt(stringList.get(3)));
                 gpu.setPrice(Integer.parseInt(stringList.get(4).replaceAll("[^\\d.]", "")));
             }
-            addGPU(gpu);
+            //Adds GPU to MAP and checks if end of row
+            helper.addComponent(gpu,gpuCatalog);
             testEnd(row);
         }
     }
 
-    private int getRandomNumber(){
-
-        Random rand = new Random();
-
-        return rand.nextInt(15001) + 1000;
-    }
-
+    /**
+     * Tests if WebElement ROW attribute DATA-LAST is true
+     * Checks if next Button is enabled, otherwise quites chromeDriver
+     * @param row row The WebElement representing the row to test.
+     */
     private void testEnd(WebElement row){
-        String value ="hello";
-        try {
+        String value;
             value = row.getAttribute("data-last");
+            //Checks if row is last
             if(value != null){
                 WebElement nextButton = chromeDriver.findElement(By.cssSelector("li[aria-label*='next page button']"));
-                nextButton.click();
-                searchGPUS();
+
+                //Check if button is not disabled
+                if(nextButton.getAttribute("data-disabled")== null){
+                    nextButton.click();
+                    search();
+                }
+                else {
+                    chromeDriver.quit();
+                }
+
             }
-            else {
-            }
-        }catch (Exception e){
-            chromeDriver.quit();
-        }
-
-
-
-
+    }
+    public Map<Integer, List<GPU>> getGpuCatalog() {
+        return gpuCatalog;
     }
 
-    private void addGPU(GPU gpu){
-        if(gpuCatalog.containsKey(gpu.getPrice())){
-            gpuCatalog.get(gpu.getPrice()).add(gpu);
-        }
-        else {
-            List<GPU> gpuList = new ArrayList<>();
-            gpuList.add(gpu);
-            gpuCatalog.put(gpu.getPrice(), gpuList);
-        }
-    }
-    public void initializeSearch(){
+    public void run() {
+        chromeDriver = new ChromeDriver();
+        //Uses chromeDriver to navigate to webpage
         chromeDriver.get("https://bestvaluegpu.com");
+        search();
     }
-
-    public List<GPU> getLowMap(int price){
-        List<GPU> viableGPU = null;
-        if(gpuCatalog.containsKey(price)){
-            viableGPU = gpuCatalog.get(price);
-        }
-        return viableGPU;
-    }
-
-    public Runnable run(){
-        searchGPUS();
-        return null;
-    }
-
 }
