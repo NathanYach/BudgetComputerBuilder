@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -111,8 +112,15 @@ public class GPUScrapper {
         return gpuCatalog;
     }
 
+
+    /**
+     * Creates a headless instance of Chrome
+     *
+     **/
     public void run() {
-        chromeDriver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        chromeDriver = new ChromeDriver(options);
         //Uses chromeDriver to navigate to webpage
         chromeDriver.get("https://bestvaluegpu.com");
         search();

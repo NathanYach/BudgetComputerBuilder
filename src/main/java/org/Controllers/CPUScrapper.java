@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,9 +33,13 @@ public class CPUScrapper {
 
     /**
      * Searches for CPUs on a web page, extracts relevant information, and adds them to the collection.
+     *  Creates A headless instance of Chrome
      */
     public void searchCPUS(){
-        chromeDriver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        chromeDriver = new ChromeDriver(options);
+
         //Uses chromeDriver to navigate to webpage
         chromeDriver.get("https://www.cpubenchmark.net/cpu_value_available.html#single-value");
         //Find the CPU information element
