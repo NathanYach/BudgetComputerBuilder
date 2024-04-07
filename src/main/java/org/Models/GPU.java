@@ -13,7 +13,7 @@ public class GPU implements Hardware {
     private int benchmark;      // Benchmark score of the GPU
     private String vram;        // Video RAM (VRAM) of the GPU
     private int rating;         // Rating of the GPU
-    private String link;        // Link to GPU details
+    private String gpuLink;        // Link to GPU details
 
     /**
      * Retrieves the price of the GPU.
@@ -128,8 +128,8 @@ public class GPU implements Hardware {
      *
      * @return The link to GPU details.
      */
-    public String getLink() {
-        return link;
+    public String getGpuLink() {
+        return gpuLink;
     }
 
     /**
@@ -138,7 +138,7 @@ public class GPU implements Hardware {
      * @param link The link to GPU details.
      */
     public void setLink(String link) {
-        this.link = link;
+        this.gpuLink = link;
     }
 
     /**
@@ -151,7 +151,7 @@ public class GPU implements Hardware {
         return
                 name +
                 ", price=" + price +
-                ", link='" + link +
+                ", link='" + gpuLink +
                 ", power='" + power +
                 ", benchmark=" + benchmark +
                 ", vram='" + vram +

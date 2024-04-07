@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <!--<script type="application/javascript" th:src="@{/script.js}" defer></script>-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget PC Builder</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #222; /* Default dark mode background color */
+            color: #eee; /* Default text color */
+            overflow-x: hidden; /* Hide horizontal overflow */
+        }
+
+        .container {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .toggle-btn {
+            appearance: none;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            outline: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-btn.light {
+            color: #222;
+            border: 2px solid #222;
+        }
+
+        .toggle-btn.dark {
+            color: #eee;
+            border: 2px solid #eee;
+        }
+
+        .toggle-btn:hover {
+            background-color: #eee;
+            color: #222;
+        }
+
+        .toggle-btn.light:hover {
+            background-color: #222;
+            color: #eee;
+        }
+
+        .toggle-btn.dark:hover {
+            background-color: #fff;
+        }
+
+        .input-group {
+            margin-top: 2rem;
+        }
+
+        .input-group label {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+        .input-group input {
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .submit-btn button {
+            font-size: 1.5rem;
+            padding: 1rem 3rem;
+            border-radius: 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #222;
+            color: #eee;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        footer a {
+            color: #eee;
+            margin-right: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container" onload="setThemeFromStorage()">
+  <div class="title">Budget PC Builder</div>
+
+  <form action="#"  method="post" id="buildForm" th:object="${builderForm}">
+  <div class="row input-group">
+    <div class="col-md-6">
+      <label for="budget">Budget:</label>
+      <input type="number" id="budget"  th:field="*{budget}" name="budget" class="form-control" placeholder="Enter your budget...">
+    </div>
+    <div class="col-md-6">
+      <label for="cpu-weight">CPU weight:</label>
+      <input type="number" min=0 max=1 step='any'  th:field="*{cpuWeight}" id="cpu-weight" name="cpu-weight" class="form-control" th:value="0.4">
+    </div>
+    <div class="col-md-6">
+      <label for="gpu-weight">GPU weight:</label>
+      <input type="number" min=0 max=1 step='any'  th:field="*{gpuWeight}" id="gpu-weight" name="gpu-weight" class="form-control" th:value="0.6">
+    </div>
+    <div class="col-md-6">
+      <label for="tax">Tax:</label>
+      <input type="number"  th:field="*{tax}" id="tax" name="tax" class="form-control" placeholder="Enter tax %...">
+    </div>
+    <div class="col-md-12 submit-btn">
+      <button type="button" onclick="validateForm()">Submit</button>
+    </div>
+  </div>
+  </form>
+</div>
+
+
+<footer>
+  <div>
+    <a class="git" href="https://github.com/NathanYach" target="_blank">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/github.png"/>
+    </a>
+  </div>
+  <div><a style="text-decoration: underline;" href="https://github.com/NathanYach">Nathan Yach</a></div>
+
+</footer>
+<script type="application/javascript">
+    function validateForm() {
+        var cpuWeight = parseFloat(document.getElementById('cpu-weight').value);
+        var gpuWeight = parseFloat(document.getElementById('gpu-weight').value);
+
+        // Check if CPU weight and GPU weight add up to 1
+        if (cpuWeight + gpuWeight !== 1) {
+            alert('CPU weight and GPU weight should add up to 1.');
+            return false; // Prevent form submission
+        }
+        document.getElementById("buildForm").submit();
+        return true; // Allow form submission
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <script type="application/javascript" th:src="@{/script.js}" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submission Status</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #222; /* Default dark mode background color */
+            color: #eee; /* Default text color */
+            overflow-x: hidden; /* Hide horizontal overflow */
+        }
+
+        .container {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #fff; /* White text color */
+        }
+
+        .toggle-btn {
+            appearance: none;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            outline: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #eee; /* White text color */
+        }
+
+        .toggle-btn.light {
+            color: #222;
+            border: 2px solid #222;
+        }
+
+        .toggle-btn.dark {
+            color: #eee;
+            border: 2px solid #eee;
+        }
+
+        .toggle-btn:hover {
+            background-color: #eee;
+            color: #222;
+        }
+
+        .toggle-btn.light:hover {
+            background-color: #222;
+            color: #eee;
+        }
+
+        .toggle-btn.dark:hover {
+            background-color: #fff;
+        }
+
+        .status {
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #fff; /* White text color */
+        }
+
+        .table-title {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #fff; /* White text color */
+        }
+
+        .footer-text {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #fff; /* White text color */
+        }
+
+        table {
+            color: #fff; /* White text color */
+        }
+
+        th, td {
+            border: 1px solid #fff; /* White border */
+            padding: 8px;
+            text-align: left;
+            color: #eee;
+        }
+
+        tr:nth-child(even) {
+            background-color: #222; /* Darker background color for even rows */
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #222;
+            color: #eee;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        footer a {
+            color: #eee;
+            margin-right: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container" onload="setThemeFromStorage()">
+  <div class="title">Submission Status</div>
+
+  <!-- CPU Table -->
+  <div class="table-title">Best CPU</div>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>CPU Link</th>
+      <th>Buy Link</th>
+      <th>Price</th>
+      <th>Rating</th>
+      <th>Benchmark</th>
+      <th>Power</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <!-- Insert Thymeleaf expressions here -->
+      <td th:text="${cpu?.name}"></td>
+      <td th:text="${cpu?.cpuLink}"></td>
+      <td th:text="${cpu?.buyLink}"><a th:href="${cpu?.buyLink}"></a></td>
+      <td th:text="${cpu?.price}"></td>
+      <td th:text="${cpu?.rating}"></td>
+      <td th:text="${cpu?.benchmark}"></td>
+      <td th:text="${cpu?.power}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- GPU Table -->
+  <div class="table-title">Best GPU</div>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>GPU Link</th>
+      <th>Price</th>
+      <th>Rating</th>
+      <th>Benchmark</th>
+      <th>Power</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <!-- Insert Thymeleaf expressions here -->
+      <td th:text="${gpu?.name}"></td>
+      <td th:text="${gpu?.gpuLink}"><a th:href="${gpu?.gpuLink}"></a></td>
+      <td th:text="${gpu?.price}"></td>
+      <td th:text="${gpu?.rating}"></td>
+      <td th:text="${gpu?.benchmark}"></td>
+      <td th:text="${gpu?.power}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Leftover Budget -->
+  <div class="footer-text">Leftover Budget: <span th:text="${leftover}"></span></div>
+</div>
+
+<footer>
+  <a class="git" href="https://github.com/NathanYach" target="_blank">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/github.png"/>
+  </a>
+</footer>
+<script src="script.js" defer></script>
+</body>
+</html>

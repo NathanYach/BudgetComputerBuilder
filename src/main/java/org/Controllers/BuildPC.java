@@ -12,7 +12,10 @@ package org.Controllers;
 import org.Models.CPU;
 import org.Models.GPU;
 import org.Models.Hardware;
+import org.Models.HardwareList;
+import org.checkerframework.checker.units.qual.A;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,31 +62,43 @@ public class BuildPC {
      *
      * @return A list of hardware components representing the built PC.
      */
-    public List<Hardware> build(){
+    public HardwareList build(){
 
         int gpuPrice = (int) (gpuWeight*budget);
         int cpuPrice = (int) (cpuWeight*budget);
-
+        //TODO NULL ERROR
         GPU bestGPU = getBestComponent(gpuPrice,gpuCatalog);
-        leftoverBudget += gpuPrice - bestGPU.getPrice();
+        GPU betterGPU = null;
+        CPU betterCPU = null;
+        HardwareList hardwareList = new HardwareList();
+
         CPU bestCPU = getBestComponent(cpuPrice, cpuCatalog);
-        leftoverBudget += cpuPrice - bestCPU.getPrice();
+        if (bestCPU != null && bestGPU != null){
 
-        GPU betterGPU = findBetterComponent((bestGPU.getPrice()+leftoverBudget), bestGPU);
-        CPU betterCPU = findBetterComponent((bestCPU.getPrice()+leftoverBudget), bestCPU);
+            leftoverBudget += cpuPrice - bestCPU.getPrice();
+            leftoverBudget += gpuPrice - bestGPU.getPrice();
+            betterGPU = findBetterComponent((bestGPU.getPrice()+leftoverBudget), bestGPU);
+            betterCPU = findBetterComponent((bestCPU.getPrice()+leftoverBudget), bestCPU);
+            hardwareList.setGpu(bestGPU);
+            hardwareList.setCpu(bestCPU);
+            System.out.println(hardwareList.getCpu().getName());
+            hardwareList.setLeftover(leftoverBudget);
+            System.out.println("Selected GPU: " + bestGPU.toString());
+            System.out.println("Selected CPU: " + bestCPU.toString());
+            System.out.println("Leftover Budget: " + leftoverBudget);
 
-        if (betterGPU != null) {
-            bestGPU = betterGPU;
+            if (betterGPU != null) {
+                bestGPU = betterGPU;
+            }
+
+            if (betterCPU != null) {
+                bestCPU = betterCPU;
+            }
+            return hardwareList;
         }
 
-        if (betterCPU != null) {
-            bestCPU = betterCPU;
-        }
-
-        System.out.println("Selected GPU: " + bestGPU.toString());
-        System.out.println("Selected CPU: " + bestCPU.toString());
-        System.out.println("Leftover Budget: " + leftoverBudget);
-        return null;
+        System.out.println("here");
+        return hardwareList;
     }
     /**
      * Compares the benchmark of hardware components in the provided list and returns the one with the highest benchmark.
