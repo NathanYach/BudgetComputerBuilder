@@ -12,7 +12,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             background-color: #222; /* Default dark mode background color */
             color: #eee; /* Default text color */
-            overflow-x: hidden; /* Hide horizontal overflow */
+             /* Hide horizontal overflow */
         }
 
         .container {
@@ -137,7 +137,6 @@
     <tr>
       <th>Name</th>
       <th>CPU Link</th>
-      <th>Buy Link</th>
       <th>Price</th>
       <th>Rating</th>
       <th>Benchmark</th>
@@ -148,8 +147,8 @@
     <tr>
       <!-- Insert Thymeleaf expressions here -->
       <td th:text="${cpu?.name}"></td>
-      <td th:text="${cpu?.cpuLink}"></td>
-      <td th:text="${cpu?.buyLink}"><a th:href="${cpu?.buyLink}"></a></td>
+      <!-- Replace CPU LINK with BUY LINK-->
+      <td th:text="${cpu?.cpuLink}"><a th:href="${cpu?.cpuLink}"></a></td>
       <td th:text="${cpu?.price}"></td>
       <td th:text="${cpu?.rating}"></td>
       <td th:text="${cpu?.benchmark}"></td>

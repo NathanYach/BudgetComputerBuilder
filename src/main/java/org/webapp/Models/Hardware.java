@@ -1,4 +1,4 @@
-package org.Models;
+package org.webapp.Models;
 
 /**
  * An interface representing hardware components.
@@ -73,4 +73,5 @@ public interface Hardware {
      * @param rating The rating to set for the hardware component.
      */
     void setRating(int rating);
+
 }

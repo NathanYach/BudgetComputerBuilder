@@ -137,19 +137,19 @@
   <div class="row input-group">
     <div class="col-md-6">
       <label for="budget">Budget:</label>
-      <input type="number" id="budget"  th:field="*{budget}" name="budget" class="form-control" placeholder="Enter your budget...">
+      <input type="number" id="budget"  th:field="*{budget}" name="budget" class="form-control" placeholder="Enter your budget..."  th:required="required">
     </div>
     <div class="col-md-6">
       <label for="cpu-weight">CPU weight:</label>
-      <input type="number" min=0 max=1 step='any'  th:field="*{cpuWeight}" id="cpu-weight" name="cpu-weight" class="form-control" th:value="0.4">
+      <input type="number" min=0 max=1 step='any'  th:field="*{cpuWeight}" id="cpu-weight" name="cpu-weight" class="form-control" th:value="0.4"  th:required="required">
     </div>
     <div class="col-md-6">
       <label for="gpu-weight">GPU weight:</label>
-      <input type="number" min=0 max=1 step='any'  th:field="*{gpuWeight}" id="gpu-weight" name="gpu-weight" class="form-control" th:value="0.6">
+      <input type="number" min=0 max=1 step='any'  th:field="*{gpuWeight}" id="gpu-weight" name="gpu-weight" class="form-control" th:value="0.6"  th:required="required">
     </div>
     <div class="col-md-6">
       <label for="tax">Tax:</label>
-      <input type="number"  th:field="*{tax}" id="tax" name="tax" class="form-control" placeholder="Enter tax %...">
+      <input type="number"  th:field="*{tax}" id="tax" name="tax" class="form-control" placeholder="Enter tax %..."  th:required="required">
     </div>
     <div class="col-md-12 submit-btn">
       <button type="button" onclick="validateForm()">Submit</button>
@@ -172,12 +172,18 @@
     function validateForm() {
         var cpuWeight = parseFloat(document.getElementById('cpu-weight').value);
         var gpuWeight = parseFloat(document.getElementById('gpu-weight').value);
+        var budget = document.getElementById('budget').value;
+        var tax = document.getElementById('tax').value;
 
         // Check if CPU weight and GPU weight add up to 1
         if (cpuWeight + gpuWeight !== 1) {
             alert('CPU weight and GPU weight should add up to 1.');
             return false; // Prevent form submission
         }
+        if (budget === null || isNaN(budget)){return false;}
+        else if(budget < 0){return false;}
+        if (tax === null || isNaN(tax)){return false;}
+        else if(tax < 0){return false;}
         document.getElementById("buildForm").submit();
         return true; // Allow form submission
     }

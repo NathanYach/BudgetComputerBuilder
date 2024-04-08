@@ -7,13 +7,14 @@
  * @author Nathan Yach
  */
 
-package org.Controllers;
-import org.Models.CPU;
+package org.webapp.Controllers;
+import org.webapp.Models.CPU;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.webapp.Services.HardwareService;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,8 +29,11 @@ public class CPUScrapper {
     //Map to store CPUs Based on price
     private final Map<Integer, List<CPU>> cpuCatalog = new LinkedHashMap<>();
 
-    //Initializes helper class
-    ScrapperHelper helper = new ScrapperHelper();
+    HardwareService service;
+
+    public CPUScrapper(HardwareService service) {this.service = service;
+    }
+
 
     /**
      * Searches for CPUs on a web page, extracts relevant information, and adds them to the collection.
@@ -59,10 +63,11 @@ public class CPUScrapper {
             int rating =(int) (Double.parseDouble(linkElement.findElement(By.className("count")).getText().replaceAll("[^\\d.]", "")));
             cpu.setRating(rating);
             cpu.setBenchmark(Integer.parseInt(linkElement.findElement(By.className("mark-neww")).getText().replaceAll("[^\\d.]", "")));
-            int price  = (int) Double.parseDouble((linkElement.findElement(By.className("price-neww")).getText().replaceAll("[^\\d.]", "")));
+            int price  = (int) Math.round(Double.parseDouble((linkElement.findElement(By.className("price-neww")).getText().replaceAll("[^\\d.]", ""))));
             cpu.setPrice(price);
             cpu.setCpuLink(linkElement.getAttribute("href"));
-            helper.addComponent(cpu, cpuCatalog);
+            service.saveCPU(cpu);
+
         }
         chromeDriver.quit();
     }

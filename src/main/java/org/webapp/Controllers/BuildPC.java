@@ -7,15 +7,13 @@
  *
  * @author Nathan Yach
  */
-package org.Controllers;
+package org.webapp.Controllers;
 
-import org.Models.CPU;
-import org.Models.GPU;
-import org.Models.Hardware;
-import org.Models.HardwareList;
-import org.checkerframework.checker.units.qual.A;
+import org.webapp.Models.CPU;
+import org.webapp.Models.GPU;
+import org.webapp.Models.Hardware;
+import org.webapp.Models.HardwareList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +38,8 @@ public class BuildPC {
     //The catalog containing CPU components organized by their price.
     Map<Integer, List<CPU>> cpuCatalog;
 
+    double tax;
+
     /**
      * Initializes a BuildPC object with the provided GPU catalog, CPU catalog, budget, GPU weight, and CPU weight.
      *
@@ -49,12 +49,13 @@ public class BuildPC {
      * @param gpuWeight The weight assigned to GPUs in the PC building algorithm.
      * @param cpuWeight The weight assigned to CPUs in the PC building algorithm.
      */
-    public BuildPC(Map<Integer, List<GPU>> gpuCatalog, Map<Integer, List<CPU>> cpuCatalog, int budget, double gpuWeight, double cpuWeight){
+    public BuildPC(Map<Integer, List<GPU>> gpuCatalog, Map<Integer, List<CPU>> cpuCatalog, int budget, double gpuWeight, double cpuWeight,double tax){
        this.cpuCatalog =  cpuCatalog;
        this.gpuCatalog = gpuCatalog;
-        this.budget = budget;
-        this.gpuWeight = gpuWeight;
-        this.cpuWeight = cpuWeight;
+       this.budget = budget;
+       this.gpuWeight = gpuWeight;
+       this.cpuWeight = cpuWeight;
+       this.tax = (tax/100) +1;
     }
 
     /**
@@ -64,20 +65,20 @@ public class BuildPC {
      */
     public HardwareList build(){
 
-        int gpuPrice = (int) (gpuWeight*budget);
-        int cpuPrice = (int) (cpuWeight*budget);
+        int gpuPrice = (int) Math.round((gpuWeight*budget)/tax);
+        int cpuPrice = (int) Math.round((cpuWeight*budget)/tax);
         //TODO NULL ERROR
-        GPU bestGPU = getBestComponent(gpuPrice,gpuCatalog);
+
         GPU betterGPU = null;
         CPU betterCPU = null;
         HardwareList hardwareList = new HardwareList();
-
+        GPU bestGPU = getBestComponent(gpuPrice,gpuCatalog);
         CPU bestCPU = getBestComponent(cpuPrice, cpuCatalog);
         if (bestCPU != null && bestGPU != null){
 
             leftoverBudget += cpuPrice - bestCPU.getPrice();
             leftoverBudget += gpuPrice - bestGPU.getPrice();
-            betterGPU = findBetterComponent((bestGPU.getPrice()+leftoverBudget), bestGPU);
+            betterGPU = findBetterComponent((bestGPU.getPrice()+leftoverBudget),bestGPU);
             betterCPU = findBetterComponent((bestCPU.getPrice()+leftoverBudget), bestCPU);
             hardwareList.setGpu(bestGPU);
             hardwareList.setCpu(bestCPU);
@@ -97,7 +98,6 @@ public class BuildPC {
             return hardwareList;
         }
 
-        System.out.println("here");
         return hardwareList;
     }
     /**

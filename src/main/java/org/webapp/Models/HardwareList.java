@@ -1,6 +1,4 @@
-package org.Models;
-
-import org.Controllers.GPUScrapper;
+package org.webapp.Models;
 
 public class HardwareList {
 

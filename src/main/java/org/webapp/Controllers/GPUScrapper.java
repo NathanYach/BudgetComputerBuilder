@@ -7,13 +7,14 @@
  * @author Nathan Yach
  */
 
-package org.Controllers;
-import org.Models.GPU;
+package org.webapp.Controllers;
+import org.webapp.Models.GPU;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.webapp.Services.HardwareService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -30,8 +31,10 @@ public class GPUScrapper {
     //Initialize selenium Chrome Driver
     private WebDriver chromeDriver;
 
-    //Initializes helper class
-    ScrapperHelper helper = new ScrapperHelper();
+    HardwareService service;
+
+    public GPUScrapper(HardwareService service) {this.service = service;
+    }
 
 
     /**
@@ -74,13 +77,13 @@ public class GPUScrapper {
                 gpu.setName(stringList.get(0));
                 gpu.setPower(stringList.get(1));
                 gpu.setVram(stringList.get(2));
-                gpu.setLink(stringList.get(5));
+                gpu.setLink(stringList.get(5).replaceAll("\\n", ""));
                 gpu.setRating(Integer.parseInt(stringList.get(6)));
                 gpu.setBenchmark(Integer.parseInt(stringList.get(3)));
                 gpu.setPrice(Integer.parseInt(stringList.get(4).replaceAll("[^\\d.]", "")));
             }
             //Adds GPU to MAP and checks if end of row
-            helper.addComponent(gpu,gpuCatalog);
+            service.saveGPU(gpu);
             testEnd(row);
         }
     }

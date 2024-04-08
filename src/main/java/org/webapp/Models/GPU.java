@@ -1,19 +1,41 @@
-package org.Models;
+package org.webapp.Models;
 
+
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
  * Represents a Graphics Processing Unit (GPU) hardware component.
  * Implements the Hardware interface.
  */
+@Table(name = "GPUs")
+@Entity
+@EnableAutoConfiguration
 public class GPU implements Hardware {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    @Column(name = "price")
     private int price;          // Price of the GPU
+    @Column(name = "name", updatable = false, columnDefinition = "TEXT")
     private String name;        // Name of the GPU
+    @Column(name = "power", columnDefinition = "TEXT")
     private String power;       // Power consumption of the GPU
+    @Column(name = "benchmark")
     private int benchmark;      // Benchmark score of the GPU
+    @Column(name = "vram", columnDefinition = "TEXT")
     private String vram;        // Video RAM (VRAM) of the GPU
+    @Column(name = "rating")
     private int rating;         // Rating of the GPU
+    @Column(name = "gpu_link", columnDefinition = "TEXT")
     private String gpuLink;        // Link to GPU details
+
+    private String type = "GPU";
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     /**
      * Retrieves the price of the GPU.
@@ -122,6 +144,7 @@ public class GPU implements Hardware {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
 
     /**
      * Retrieves the link to detailed information about the GPU.

@@ -1,10 +1,22 @@
-package org.Models;
+package org.webapp.Models;
+
+
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
  * Represents a Central Processing Unit (CPU) hardware component.
  * Implements the Hardware interface.
  */
+@Table(name = "CPUs")
+@Entity
+@EnableAutoConfiguration
 public class CPU implements Hardware {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     // Name of the CPU
     private String name;
@@ -20,6 +32,12 @@ public class CPU implements Hardware {
     private int benchmark;
     // Power consumption of the CPU
     private String power;
+
+    private String type = "CPU";
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     /**
      * Retrieves the power consumption of the CPU.
