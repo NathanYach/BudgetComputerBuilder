@@ -1,5 +1,6 @@
 package org.webapp.Controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.webapp.Models.*;
 import org.webapp.Repositories.CPURepository;
 import org.webapp.Repositories.GPURepository;
@@ -18,12 +19,14 @@ class WebController {
     private final HardwareService hardwareService;
 
     @RequestMapping("/")
-    public String PcBuilderWeb(Model model) {
+    public String PcBuilderWeb(Model model,HttpServletRequest request) {
+        String ipAddress = request.getRemoteAddr();
+        System.out.println(ipAddress);
         model.addAttribute("builderForm", new BuilderForm(0.4,0.6,0,0));
         return "PcBuilderWeb";
     }
     @PostMapping("/")
-    public String submit(@ModelAttribute BuilderForm builderForm, Model model,GPURepository gpuRepository,CPURepository cpuRepository){
+    public String submit(@ModelAttribute BuilderForm builderForm, Model model){
 
         model.addAttribute("builderForm", builderForm);
 

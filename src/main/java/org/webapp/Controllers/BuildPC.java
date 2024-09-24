@@ -82,7 +82,6 @@ public class BuildPC {
             betterCPU = findBetterComponent((bestCPU.getPrice()+leftoverBudget), bestCPU);
             hardwareList.setGpu(bestGPU);
             hardwareList.setCpu(bestCPU);
-            System.out.println(hardwareList.getCpu().getName());
             hardwareList.setLeftover(leftoverBudget);
             System.out.println("Selected GPU: " + bestGPU.toString());
             System.out.println("Selected CPU: " + bestCPU.toString());
